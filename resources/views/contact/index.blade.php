@@ -1,17 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PhoneBook Laravel</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-</head>
-<body>
+@extends('main-layout')
 
-<div class="container">
+@section('page_title', 'prikaz kontakata')
 
+@section('content')
     <h3 class="text-center mt-3">Lista kontakta</h3>
 
     <div class="row">
@@ -37,35 +28,33 @@
                     <th>Ime</th>
                     <th>Prezime</th>
                     <th>Email</th>
+                    <th>Grad</th>
                     <th></th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
-                    @foreach($contacts as $contact)
-                        <tr>
-                            <td>{{ $contact->id }}</td>
-                            <td>{{ $contact->first_name }}</td>
-                            <td>{{ $contact->last_name }}</td>
-                            <td>{{ $contact->email }}</td>
-                            <td>
-                                <a href="{{ route('contact.edit', ['id' => $contact->id]) }}" class="btn btn-primary btn-sm">izmjena</a>
-                            </td>
-                            <td>
-                                <form action="{{ route('contact.delete', ['id' => $contact->id]) }}" method="POST">
-                                    @method('DELETE')
-                                    @csrf
-                                    <button class="btn btn-sm btn-danger" >brisanje</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
+                @foreach($contacts as $contact)
+                    <tr>
+                        <td>{{ $contact->id }}</td>
+                        <td>{{ $contact->first_name }}</td>
+                        <td>{{ $contact->last_name }}</td>
+                        <td>{{ $contact->email }}</td>
+                        <td>{{ $contact->city->name }}</td>
+                        <td>
+                            <a href="{{ route('contact.edit', ['id' => $contact->id]) }}" class="btn btn-primary btn-sm">izmjena</a>
+                        </td>
+                        <td>
+                            <form action="{{ route('contact.delete', ['id' => $contact->id]) }}" method="POST">
+                                @method('DELETE')
+                                @csrf
+                                <button class="btn btn-sm btn-danger" >brisanje</button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
                 </tbody>
             </table>
-
         </div>
     </div>
-</div>
-
-</body>
-</html>
+@endsection

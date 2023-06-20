@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\City;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -24,8 +25,13 @@ class ContactController extends Controller
         return view('contact.index', ['contacts' => $contacts]);
     }
 
+    public function show(Contact $contact){
+        return view('contact.show', ['contact' => $contact]);
+    }
+
     public function create(){
-        return view('contact.create');
+        $cities = City::all();
+        return view('contact.create', ['cities' => $cities]);
     }
 
     public function save(Request $request){

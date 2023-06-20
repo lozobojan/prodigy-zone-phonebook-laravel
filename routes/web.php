@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CityController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -26,8 +27,14 @@ Route::get('/contact/save', [HomeController::class, 'saveContact'] );
 
 // Contact routes
 Route::get('/contacts', [ContactController::class, 'index'] )->name('contact.index');
+
+// route-model binding
 Route::get('/contacts/create', [ContactController::class, 'create'] )->name('contact.create');
+Route::get('/contacts/{contact}', [ContactController::class, 'show'])->name('contact.show');
+
 Route::get('/contacts/{id}/edit', [ContactController::class, 'edit'] )->name('contact.edit');
 Route::post('/contacts', [ContactController::class, 'save'])->name('contact.save');
 Route::put('/contacts/{id}', [ContactController::class, 'update'])->name('contact.update');
 Route::delete('/contacts/{id}', [ContactController::class, 'delete'])->name('contact.delete');
+
+Route::resource('/cities', CityController::class);
