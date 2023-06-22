@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ContactRequest;
 use App\Models\City;
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
 class ContactController extends Controller
 {
     public function index(Request $request){
+        // FACADE
+        $loggedInUserId = Auth::id();
 
-        $contacts = Contact::query();
+        $contacts = Contact::query()->where('user_id', $loggedInUserId);
 
         if($request->has('searchTerm')){
             $term = $request->get('searchTerm');
@@ -34,8 +38,8 @@ class ContactController extends Controller
         return view('contact.create', ['cities' => $cities]);
     }
 
-    public function save(Request $request){
-        $newContactDetails = $request->except('_token');
+    public function save(ContactRequest $request){
+        $newContactDetails = array_merge($request->validated(), ['user_id' => Auth::id()]);
         Contact::query()->create($newContactDetails);
 
         return Redirect::route('contact.index');
@@ -43,13 +47,14 @@ class ContactController extends Controller
 
     public function edit($id){
         $contact = Contact::query()->findOrFail($id);
-        return view('contact.edit', ['contact' => $contact]);
+        $cities = City::all();
+        return view('contact.edit', ['contact' => $contact, 'cities' => $cities]);
     }
 
-    public function update($id, Request $request){
+    public function update($id, ContactRequest $request){
+
         $contact = Contact::query()->findOrFail($id);
-        $newDetails = $request->only(['first_name', 'last_name', 'email']);
-        $contact->update($newDetails);
+        $contact->update($request->validated());
 
         return Redirect::route('contact.index');
     }

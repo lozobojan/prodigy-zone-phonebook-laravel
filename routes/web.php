@@ -38,3 +38,7 @@ Route::put('/contacts/{id}', [ContactController::class, 'update'])->name('contac
 Route::delete('/contacts/{id}', [ContactController::class, 'delete'])->name('contact.delete');
 
 Route::resource('/cities', CityController::class);
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
