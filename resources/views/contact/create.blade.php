@@ -8,7 +8,7 @@
 
     <div class="row">
         <div class="col-8 offset-2">
-            <form action="{{ route('contact.save') }}" method="POST">
+            <form action="{{ route('contact.save') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <label for="firstName">Ime:</label>
@@ -36,6 +36,12 @@
                     @endforeach
                 </select>
                 @error('city_id')
+                    <div class="alert alert-danger mt-2">{{ $message }}</div>
+                @enderror
+
+                <label for="avatar_photo">Slika:</label>
+                <input type="file" name="avatarPhoto" id="avatar_photo" class="form-control">
+                @error('avatarPhoto')
                     <div class="alert alert-danger mt-2">{{ $message }}</div>
                 @enderror
 

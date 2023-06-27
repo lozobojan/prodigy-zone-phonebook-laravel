@@ -8,6 +8,7 @@ use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 
 class ContactController extends Controller
 {
@@ -39,7 +40,12 @@ class ContactController extends Controller
     }
 
     public function save(ContactRequest $request){
-        $newContactDetails = array_merge($request->validated(), ['user_id' => Auth::id()]);
+        $path = Storage::putFile('uploads', $request->file('avatarPhoto'));
+
+        $newContactDetails = array_merge(
+            $request->validated(),
+            ['user_id' => Auth::id(), 'photo' => $path]
+        );
         Contact::query()->create($newContactDetails);
 
         return Redirect::route('contact.index');
@@ -51,16 +57,25 @@ class ContactController extends Controller
         return view('contact.edit', ['contact' => $contact, 'cities' => $cities]);
     }
 
-    public function update($id, ContactRequest $request){
+    public function update(Contact $contact, ContactRequest $request){
 
-        $contact = Contact::query()->findOrFail($id);
-        $contact->update($request->validated());
+        $updatedContactDetails = $request->validated();
+        if($request->hasFile('avatarPhoto')){
+            $contact->deletePhotoFromUploads();
+
+            $path = $request->file('avatarPhoto')->store('uploads');
+            $updatedContactDetails['photo'] = $path;
+        }
+
+        $contact->update($updatedContactDetails);
 
         return Redirect::route('contact.index');
     }
 
-    public function delete($id){
-        $contact = Contact::query()->findOrFail($id);
+    public function delete(Contact $contact){
+
+        $contact->deletePhotoFromUploads();
+
         $contact->delete();
 
         return Redirect::route('contact.index');

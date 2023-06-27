@@ -45,7 +45,7 @@
                             <a href="{{ route('contact.edit', ['id' => $contact->id]) }}" class="btn btn-primary btn-sm">izmjena</a>
                         </td>
                         <td>
-                            <form action="{{ route('contact.delete', ['id' => $contact->id]) }}" method="POST">
+                            <form action="{{ route('contact.delete', ['contact' => $contact]) }}" method="POST">
                                 @method('DELETE')
                                 @csrf
                                 <button class="btn btn-sm btn-danger" >brisanje</button>

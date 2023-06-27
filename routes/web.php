@@ -34,8 +34,8 @@ Route::get('/contacts/{contact}', [ContactController::class, 'show'])->name('con
 
 Route::get('/contacts/{id}/edit', [ContactController::class, 'edit'] )->name('contact.edit');
 Route::post('/contacts', [ContactController::class, 'save'])->name('contact.save');
-Route::put('/contacts/{id}', [ContactController::class, 'update'])->name('contact.update');
-Route::delete('/contacts/{id}', [ContactController::class, 'delete'])->name('contact.delete');
+Route::put('/contacts/{contact}', [ContactController::class, 'update'])->name('contact.update');
+Route::delete('/contacts/{contact}', [ContactController::class, 'delete'])->name('contact.delete');
 
 Route::resource('/cities', CityController::class);
 

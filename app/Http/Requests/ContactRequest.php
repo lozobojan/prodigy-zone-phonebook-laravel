@@ -25,7 +25,8 @@ class ContactRequest extends FormRequest
             'first_name' => ['required', 'min:2'],
             'last_name' => ['required', 'min:2'],
             'email' => ['required', 'email:rfc,dns'],
-            'city_id' => ['required', 'integer', 'exists:cities,id']
+            'city_id' => ['required', 'integer', 'exists:cities,id'],
+            // 'avatarPhoto' => ['optional', 'image']
         ];
     }
 
@@ -40,6 +41,7 @@ class ContactRequest extends FormRequest
             'city_id.required' => 'Molimo Vas da odaberete grad',
             'city_id.integer' => 'Molimo Vas da odaberete ispravan grad',
             'city_id.exists' => 'Molimo Vas da odaberete ispravan grad',
+            // 'avatarPhoto.image' => 'Molimo Vas da odaberete validnu fotografiju',
         ];
     }
 }
